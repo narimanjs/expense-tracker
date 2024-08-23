@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ExpenseForm from "./components/ExpenseForm";
 import TransactionList from "./components/TransactionList";
 import { Container, CssBaseline, Grid } from "@mui/material";
@@ -18,13 +18,29 @@ const App: React.FC = () => {
   const [editingTransaction, setEditingTransaction] =
     useState<Transaction | null>(null);
 
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await axios.get(
+          "https://expense-tracker-dusky-ten.vercel.app/api/transactions"
+        );
+        setTransactions(response.data);
+      } catch (error) {
+        console.error("Failed to fetch transactions:", error);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
   const handleAddTransaction = (newTransaction: Transaction) => {
     setTransactions(prevTransactions => [...prevTransactions, newTransaction]);
   };
 
   const handleDeleteTransaction = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/transactions/${id}`);
+      await axios.delete(
+        `https://expense-tracker-dusky-ten.vercel.app/api/transactions/${id}`
+      );
       setTransactions(
         transactions.filter(transaction => transaction.id !== id)
       );
@@ -60,7 +76,7 @@ const App: React.FC = () => {
       >
         <Grid
           item
-          xs={15}
+          xs={12}
           md={6}
         >
           <ExpenseForm
@@ -71,7 +87,7 @@ const App: React.FC = () => {
         </Grid>
         <Grid
           item
-          xs={15}
+          xs={12}
           md={6}
         >
           <TransactionList

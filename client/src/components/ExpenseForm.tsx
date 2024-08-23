@@ -67,14 +67,14 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     try {
       if (editingTransaction) {
         const response = await axios.put(
-          `http://localhost:5000/api/transactions/${editingTransaction.id}`,
+          `https://expense-tracker-dusky-ten.vercel.app/api/transactions/${editingTransaction.id}`,
           expenseData
         );
         onUpdateTransaction(response.data);
         setMessage("Expense updated successfully!");
       } else {
         const response = await axios.post(
-          "http://localhost:5000/api/transactions",
+          "https://expense-tracker-dusky-ten.vercel.app/api/transactions",
           expenseData
         );
         onAddTransaction(response.data);

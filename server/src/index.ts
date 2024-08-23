@@ -22,6 +22,11 @@ type Transaction = {
 // Простая база данных в памяти
 let transactions: Transaction[] = [];
 
+// Обработка корневого маршрута
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
+
 // POST: Добавление новой транзакции
 app.post("/api/transactions", (req: Request, res: Response) => {
   const { date, amount, category, comment } = req.body;

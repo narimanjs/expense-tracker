@@ -9,7 +9,9 @@ import {
   FormControl,
   Typography,
   Box,
+  IconButton,
 } from "@mui/material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 type Transaction = {
   id: number;
@@ -36,6 +38,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
   const [category, setCategory] = useState<string>("");
   const [comment, setComment] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [isFormVisible, setIsFormVisible] = useState(true); // Состояние для видимости формы
 
   useEffect(() => {
     if (editingTransaction) {
@@ -54,6 +57,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       return () => clearTimeout(timer); // Очистка таймера при размонтировании компонента или при изменении message
     }
   }, [message]);
+
+  const toggleFormVisibility = () => {
+    setIsFormVisible(!isFormVisible);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,12 +100,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
   return (
     <Box
-      component='form'
-      onSubmit={handleSubmit}
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
         maxWidth: 400,
         margin: "auto",
         padding: 2,
@@ -106,67 +108,90 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         borderRadius: 2,
       }}
     >
-      <Typography
-        variant='h6'
-        gutterBottom
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        mb={2}
       >
-        {editingTransaction ? "Редактировать расход" : "Добавить расход"}
-      </Typography>
-      <TextField
-        id='date'
-        label='Дата'
-        type='date'
-        value={date}
-        onChange={e => setDate(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        required
-      />
-      <TextField
-        id='amount'
-        label='Сумма'
-        type='number'
-        value={amount}
-        onChange={e => setAmount(e.target.value)}
-        required
-      />
-      <FormControl required>
-        <InputLabel id='category-label'>Категория</InputLabel>
-        <Select
-          labelId='category-label'
-          id='category'
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-          label='Категория'
-        >
-          <MenuItem value='food'>Еда</MenuItem>
-          <MenuItem value='transport'>Транспорт</MenuItem>
-          <MenuItem value='entertainment'>Развлечения</MenuItem>
-        </Select>
-      </FormControl>
-      <TextField
-        id='comment'
-        label='Комментарий'
-        multiline
-        rows={4}
-        value={comment}
-        onChange={e => setComment(e.target.value)}
-      />
-      <Button
-        type='submit'
-        variant='contained'
-        color='primary'
-      >
-        {editingTransaction ? "Обновить расход" : "Добавить расход"}
-      </Button>
-      {message && (
         <Typography
-          variant='body2'
-          color='secondary'
+          variant='h6'
+          gutterBottom
         >
-          {message}
+          {editingTransaction ? "Редактировать расход" : "Добавить расход"}
         </Typography>
+        <IconButton onClick={toggleFormVisibility}>
+          {isFormVisible ? <ExpandLess /> : <ExpandMore />}
+        </IconButton>
+      </Box>
+
+      {isFormVisible && (
+        <Box
+          component='form'
+          onSubmit={handleSubmit}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <TextField
+            id='date'
+            label='Дата'
+            type='date'
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            required
+          />
+          <TextField
+            id='amount'
+            label='Сумма'
+            type='number'
+            value={amount}
+            onChange={e => setAmount(e.target.value)}
+            required
+          />
+          <FormControl required>
+            <InputLabel id='category-label'>Категория</InputLabel>
+            <Select
+              labelId='category-label'
+              id='category'
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+              label='Категория'
+            >
+              <MenuItem value='food'>Еда</MenuItem>
+              <MenuItem value='transport'>Транспорт</MenuItem>
+              <MenuItem value='entertainment'>Развлечения</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            id='comment'
+            label='Комментарий'
+            multiline
+            rows={4}
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+          />
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+          >
+            {editingTransaction ? "Обновить расход" : "Добавить расход"}
+          </Button>
+          {message && (
+            <Typography
+              variant='body2'
+              color='secondary'
+            >
+              {message}
+            </Typography>
+          )}
+        </Box>
       )}
     </Box>
   );

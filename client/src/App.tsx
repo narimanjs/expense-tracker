@@ -13,7 +13,7 @@ type Transaction = {
   comment: string;
 };
 
-const App: React.FC = () => {
+const App = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [editingTransaction, setEditingTransaction] =
     useState<Transaction | null>(null);
@@ -72,12 +72,13 @@ const App: React.FC = () => {
       </h1>
       <Grid
         container
-        // spacing={1}
+        spacing={0}
       >
         <Grid
           item
           xs={12}
           md={6}
+          sx={{ mb: 2 }}
         >
           <ExpenseForm
             onAddTransaction={handleAddTransaction}

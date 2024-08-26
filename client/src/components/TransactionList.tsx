@@ -34,7 +34,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
   return (
     <Box
       sx={{
-        maxWidth: 400,
+        maxWidth: 700,
         margin: "auto",
         padding: 2,
         boxShadow: 3,
@@ -63,7 +63,7 @@ const TransactionList: React.FC<TransactionListProps> = ({
                 xs={8}
               >
                 <ListItemText
-                  primary={`${transaction.dateTime} - ${transaction.sum} - ${transaction.category}`}
+                  primary={`${transaction.id} | ${transaction.dateTime} | ${transaction.sum} | ${transaction.category}`}
                   secondary={transaction.comment}
                 />
               </Grid>

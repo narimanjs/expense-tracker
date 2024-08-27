@@ -17,6 +17,11 @@ const App = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [editingTransaction, setEditingTransaction] =
     useState<Transaction | null>(null);
+  const [isListVisible, setIsListVisible] = useState(true);
+
+  const toggleListVisibility = () => {
+    setIsListVisible(!isListVisible);
+  };
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -95,6 +100,8 @@ const App = () => {
             transactions={transactions}
             onDelete={handleDeleteTransaction}
             onEdit={handleEditTransaction}
+            isListVisible={isListVisible}
+            toggleListVisibility={toggleListVisibility}
           />
         </Grid>
       </Grid>
